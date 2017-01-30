@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/white">
+
+    <CheckBoxPreference
+        android:key="@string/auto_send"
+        android:title="Send message automatically"
+        android:summary="When opening the app, pick a random preset message and open list of contacts"
+        android:defaultValue="false" />
+
+    <CheckBoxPreference
+        android:key="@string/notifications_settings_key"
+        android:title="Notifications"
+        android:summary="Sends a notification on a scheduled time."
+        android:defaultValue="false" />
+
+    <com.twinc.halmato.autowhatsappmessage.WeekdayNotificationPreference
+        android:dependency="@string/notifications_settings_key"
+        android:key="@string/notification_schedule_key"
+        android:title="@string/notification_schedule"
+        android:defaultValue="24"
+        />
+
+    <!--
+    <com.twinc.halmato.autowhatsappmessage.TimePreference
+        android:dependency="@string/notifications_settings_key"
+        android:key="@string/notification_delay_key"
+        android:title="@string/notification_delay"
+        android:defaultValue="24"/>
+    -->
+
+    <ListPreference
+        android:key="@string/default_application_key"
+        android:title="Default Application"
+        android:dialogTitle="Default"
+        android:entries="@array/messaging_applications"
+        android:entryValues="@array/messaging_applications"
+        android:defaultValue="Whatsapp" />
+
+
+
+</PreferenceScreen>
