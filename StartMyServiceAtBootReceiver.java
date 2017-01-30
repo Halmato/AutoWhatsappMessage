@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationScheduler;
+import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationUtilities;
 
 
 /**
@@ -21,7 +22,7 @@ public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (deviceJustBooted(intent))
-            NotificationScheduler.setScheduledNotifications(context);
+            NotificationUtilities.setScheduledNotifications(context);
     }
 
     private boolean deviceJustBooted(Intent intent) {

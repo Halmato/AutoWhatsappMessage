@@ -14,6 +14,7 @@ import android.widget.CheckBox;
 import android.widget.TimePicker;
 
 import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationScheduler;
+import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationUtilities;
 
 /**
  * Created by Tiaan on 12/9/2016.
@@ -138,7 +139,7 @@ public class WeekdayNotificationPreference extends DialogPreference {
             setInitialState();
         }
 
-        NotificationScheduler.setScheduledNotifications(getContext());
+        NotificationUtilities.setScheduledNotifications(getContext());
     }
 
     private void updateWeekdayPickerSharedPreferences() {
@@ -173,32 +174,5 @@ public class WeekdayNotificationPreference extends DialogPreference {
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
 
     }
-
-
-    public static boolean notificationPreferenceIsActive(Context context) {
-
-        String notificationActiveKey = context.getResources().getString(R.string.notifications_settings_key);
-
-        boolean isActive = PreferenceManager.getDefaultSharedPreferences(context).getBoolean(notificationActiveKey,false);
-
-        return isActive;
-    }
-
-    public static boolean atLeastOneNotificationDayIsSelected(Context context) {
-
-        for (int i = 0; i < WeekdayNotificationPreference.AMOUNT_OF_DAYS_IN_WEEK; i++) {
-
-            if(NotificationScheduler.weekdayCheckboxIsChecked(context,i)) {
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-
-
 
 }

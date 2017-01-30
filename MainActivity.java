@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationScheduler;
+import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationUtilities;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -50,21 +51,11 @@ public class MainActivity extends AppCompatActivity {
         GOOGLEPLUS
     }
 
-    ///////////////////////////////////////// variables ///////////////////////////////////////////
 
     private final MessageApplication DEFAULT_APPLICATION = WHATSAPP;
-    private final int DEFAULT_NOTIFICATION_DELAY = 24;
-
-    private final Context context = this;
+    //private final Context context = this;
     private final String presetMessagesKey = "PRESET_MESSAGES_KEY";
 
-    /*public  final static String sharedPreferencesToken = "DEFAULT_SHARED_PREFERENCES";
-    private final String automaticSendKey = "AUTOMATIC_SEND_KEY";
-    private final String messagingApplicationKey = "MESSAGING_APPLICATION_KEY";
-    private final String whatsAppPackageName = "com.whatsapp";
-    private final String weChatPackageName = "com.tencent.mm";*/
-
-    public static final int AMOUNT_OF_NOTIFICATIONS_SET_IN_ADVANCE = 3;
 
     private boolean sendAutomatically;
 
@@ -149,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         trySendMessageAutomatically();
 
-        NotificationScheduler.setScheduledNotifications(this);
+        NotificationUtilities.setScheduledNotifications(this);
     }
 
     @Override
@@ -180,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
-                .addToBackStack(context.getClass().getSimpleName())
+                .addToBackStack(getBaseContext().getClass().getSimpleName())
                 .commit();
     }
 
@@ -242,22 +233,14 @@ public class MainActivity extends AppCompatActivity {
         sendAutomatically = autoSendPreferences;
     }
 
-    private boolean notificationsShouldBeScheduled() {
-        return notificationsAreActivated() && WeekdayNotificationPreference.atLeastOneNotificationDayIsSelected(this);
-    }
-
-    private boolean notificationsAreActivated() {
-        return WeekdayNotificationPreference.notificationPreferenceIsActive(this);
-    }
-
     private void promptToAddPresetMessage() {
 
         // get prompts.xml view
-        LayoutInflater li = LayoutInflater.from(context);
+        LayoutInflater li = LayoutInflater.from(getBaseContext());
         View promptsView = li.inflate(R.layout.add_preset_prompt, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                context);
+                getBaseContext());
 
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);
@@ -327,6 +310,7 @@ public class MainActivity extends AppCompatActivity {
        // the OnClickListener of the Dialog's YES, would be editPresetMessage callback.
 
     }
+
     private void editPresetMessage(int index, String updatedMessage)    {
 
         presetMessages.get(index).message = updatedMessage;
@@ -338,6 +322,7 @@ public class MainActivity extends AppCompatActivity {
         int randomIndex = new Random().nextInt(presetMessages.size());
         return presetMessages.get(randomIndex);
     }
+
     private void loadPresetMessages() {
 
         Set<String> storedPresetMessagesSet = sharedPreferences.getStringSet(presetMessagesKey, new HashSet<String>());
