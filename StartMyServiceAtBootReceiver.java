@@ -29,4 +29,9 @@ public class StartMyServiceAtBootReceiver extends BroadcastReceiver {
 
         return intent.getAction().equals(SERVICE_OPERATION_BOOT_COMPLETED);
     }
+
+    public static void test() {
+
+    }
+
 }
