@@ -19,17 +19,27 @@ public class ScheduledNotification extends BroadcastReceiver {
     private static int DEFAULT_NOTIFICATION_ID = 0;
 
     @Override
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void onReceive(Context context, Intent intent) {
 
-        Intent openApplicationIntent = new Intent(context,MainActivity.class);
-        PendingIntent openApplicationPendingIntent = PendingIntent.getActivity(context, 0, openApplicationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = createOpenApplicationPendingIntent(context, MainActivity.class);
+
+        showNotification(context, pendingIntent);
+    }
+
+    private PendingIntent createOpenApplicationPendingIntent(Context context, Class classToOpen) {
+
+        Intent openApplicationIntent = new Intent(context,classToOpen);
+        return PendingIntent.getActivity(context, 0, openApplicationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    public void showNotification(Context context,PendingIntent pendingIntent) {
 
         Notification notification = new Notification.Builder(context)
                 .setSmallIcon(R.drawable.ic_fab_plus)
                 .setContentText("CONTENT")
                 .setContentTitle("TITLE")
-                .setContentIntent(openApplicationPendingIntent)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();
         notification.defaults = Notification.DEFAULT_ALL;
