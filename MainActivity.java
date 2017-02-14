@@ -1,6 +1,5 @@
 package com.twinc.halmato.autowhatsappmessage;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +24,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationScheduler;
 import com.twinc.halmato.autowhatsappmessage.Notifications.NotificationUtilities;
 
 import java.util.ArrayList;
@@ -52,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private final MessageApplication DEFAULT_APPLICATION = WHATSAPP;
+    private final static MessageApplication DEFAULT_APPLICATION = WHATSAPP;
     //private final Context context = this;
     private final String presetMessagesKey = "PRESET_MESSAGES_KEY";
 
@@ -67,9 +65,11 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences.Editor sharedPreferencesEditor;
 
     private List<PresetMessage> presetMessages;
-    private MessageApplication selectedApplication;
+    public static MessageApplication selectedApplication;
 
     public ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+        public View selectedView;
 
         // Called when the action mode is created; startActionMode() was called
         @Override
@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         // may be called multiple times if the mode is invalidated.
         @Override
         public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+
 
             return false; // Return false if nothing is done
         }
@@ -118,11 +119,24 @@ public class MainActivity extends AppCompatActivity {
         // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
+
             actionMode = null;
         }
     };
 
-    ////////////////////////////////////////// overrides ///////////////////////////////////////////
+    //////////////////////////////////////// static methods ////////////////////////////////////////
+
+    public static void setSelectedApplication(String appName) {
+
+        appName = appName.toUpperCase(Locale.ENGLISH);
+
+
+        MessageApplication app = (!appName.equals("")) ?  MessageApplication.valueOf(appName) : DEFAULT_APPLICATION;
+
+        selectedApplication = app;
+    }
+
+    //////////////////////////////////////////// methods ///////////////////////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -217,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadMessagingApplicationPreferences() {
 
-        String defaultAppKey = getResources().getString(R.string.default_application_key);
+        String defaultAppKey = getResources().getString(R.string.selected_application_key);
         String defaultAppName = sharedPreferences.getString(defaultAppKey,"").toUpperCase(Locale.ENGLISH);
 
         MessageApplication defaultApp = (!defaultAppName.equals("")) ?  MessageApplication.valueOf(defaultAppName) : DEFAULT_APPLICATION;
@@ -240,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         View promptsView = li.inflate(R.layout.add_preset_prompt, null);
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-                getBaseContext());
+                this);
 
         // set prompts.xml to alertdialog builder
         alertDialogBuilder.setView(promptsView);

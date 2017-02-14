@@ -130,6 +130,8 @@ public class NotificationUtilities {
 
     public static void setScheduledNotifications(Context context)  {
 
+        NotificationScheduler.removeAllScheduledNotifications(context);
+
         if(notificationsShouldBeScheduled(context))
             setNextSetScheduledNotifications(context, AMOUNT_OF_NOTIFICATIONS_SET_IN_ADVANCE);
     }

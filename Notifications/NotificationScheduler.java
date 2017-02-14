@@ -4,6 +4,8 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +27,8 @@ public class NotificationScheduler {
         }
 
         pendingNotifications.clear();
+
+        Toast.makeText(context, "Removed all pending notifications["+pendingNotifications.size()+"]", Toast.LENGTH_SHORT).show();
     }
 
     public static void scheduleNotification(Context context, int notificationId, long timeToTrigger) {

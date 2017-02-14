@@ -22,6 +22,7 @@ public class PresetMessagesAdapter extends RecyclerView.Adapter<PresetMessagesAd
 
     private List<PresetMessage> presetMessagesList;
     private MainActivity mainActivity;
+    private View selectedView;
 
     // Constructor
     public PresetMessagesAdapter(List<PresetMessage> presetMessagesList, MainActivity mainActivity)  {
@@ -62,7 +63,7 @@ public class PresetMessagesAdapter extends RecyclerView.Adapter<PresetMessagesAd
 
     @Override
     public MyViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.preset_messages_view, parent, false);
+        final View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.preset_messages_view, parent, false);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +77,10 @@ public class PresetMessagesAdapter extends RecyclerView.Adapter<PresetMessagesAd
             @Override
             public boolean onLongClick(View v) {
 
+                if(selectedView != null) {
+                    selectedView.setSelected(false);
+                }
+
                 if(mainActivity.actionMode != null)    {
                     return false;
                 }
@@ -84,6 +89,8 @@ public class PresetMessagesAdapter extends RecyclerView.Adapter<PresetMessagesAd
 
                 mainActivity.actionMode = mainActivity.startSupportActionMode(mainActivity.mActionModeCallback);
                 mainActivity.actionMode.setTag(index);
+
+                selectedView = v;
                 v.setSelected(true);
 
                 return true;
@@ -117,6 +124,7 @@ public class PresetMessagesAdapter extends RecyclerView.Adapter<PresetMessagesAd
         public MyViewHolder(View view)  {
 
             super(view);
+
             presetmessage = (TextView) view.findViewById(R.id.tv_preset_message);
             lastUsed = (TextView) view.findViewById(R.id.tv_last_used);
 
